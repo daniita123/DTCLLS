@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacto - DATACELLS</title>
+  <link rel="stylesheet" href="data.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="top-bar">
+    <p>Envíos a todo México | Atención personalizada</p>
+  </div>
+
+  <header class="main-header">
+    <div class="left-section">
+      <div class="logo">DATACELLS</div>
+      <nav class="nav-links">
+        <a href="reparadorConf.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="contacto.html" class="active">Contacto</a>
+      </nav>
+    </div>
+    <div class="cart-icon">
+      <img src="https://static.vecteezy.com/system/resources/previews/019/787/018/original/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" alt="Carrito"/>
+    </div>
+  </header>
+
+  <main>
+    <section class="contact-form">
+      <h2>Contáctanos</h2>
+      <form>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" required>
+
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <button type="submit">Enviar</button>
+      </form>
+
+      <!-- WhatsApp Direct Link -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <p style="font-weight: bold;">¿Prefieres hablar por WhatsApp?</p>
+        <a
+          href="https://wa.me/5218134161717?text=Hola%20DATACELLS,%20me%20gustaría%20obtener%20más%20información%20sobre%20sus%20productos."
+          target="_blank"
+          style="display: inline-block; background-color: #25D366; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;"
+        >
+          📱 Escríbenos por WhatsApp
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 DATACELLS | Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Envío simulado del formulario
+    document.querySelector("form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Gracias por contactarnos. Nos comunicaremos contigo pronto.");
+      this.reset();
+    });
+
+    // Funcionalidad del carrito
+    const cartIcon = document.querySelector('.cart-icon');
+    const cartSidebar = document.createElement('div');
+    cartSidebar.classList.add('cart-sidebar');
+    cartSidebar.innerHTML = `
+      <div class="cart-close">X</div>
+      <h2>Carrito</h2>
+      <ul id="cartItems"></ul>
+      <p>Total: <span id="cartTotal">$0 MXN</span></p>
+    `;
+    document.body.appendChild(cartSidebar);
+
+    const cartClose = cartSidebar.querySelector('.cart-close');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+
+    let cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      renderCart();
+      openCart();
+    }
+
+    function renderCart() {
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.price}`;
+        const btn = document.createElement('button');
+        btn.textContent = 'Eliminar';
+        btn.classList.add('remove-btn');
+        btn.onclick = () => removeFromCart(index);
+        li.appendChild(btn);
+        cartItems.appendChild(li);
+        total += parseFloat(item.price.replace('$', '').replace('MXN', '').trim());
+      });
+      cartTotal.textContent = `$${total.toFixed(2)} MXN`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function openCart() {
+      cartSidebar.style.display = 'block';
+      cartSidebar.style.position = 'fixed';
+      cartSidebar.style.top = '0';
+      cartSidebar.style.right = '0';
+      cartSidebar.style.width = '300px';
+      cartSidebar.style.height = '100%';
+      cartSidebar.style.backgroundColor = '#fff';
+      cartSidebar.style.boxShadow = '-4px 0 12px rgba(0, 0, 0, 0.2)';
+      cartSidebar.style.padding = '1rem';
+      cartSidebar.style.zIndex = '1000';
+      cartSidebar.style.overflowY = 'auto';
+    }
+
+    function closeCart() {
+      cartSidebar.style.display = 'none';
+    }
+
+    cartIcon.addEventListener('click', () => {
+      const isVisible = cartSidebar.style.display === 'block';
+      if (isVisible) {
+        closeCart();
+      } else {
+        openCart();
+      }
+    });
+
+    cartClose.addEventListener('click', closeCart);
+  </script>
+</body>
+</html>
